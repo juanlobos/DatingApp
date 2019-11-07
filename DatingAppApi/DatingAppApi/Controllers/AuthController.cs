@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Security.Cryptography;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DatingAppApi.Data;
