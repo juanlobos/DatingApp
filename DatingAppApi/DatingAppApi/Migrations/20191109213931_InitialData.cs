@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatingAppApi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,8 +17,8 @@ namespace DatingAppApi.Migrations
                     PaswordHash = table.Column<byte[]>(nullable: true),
                     PaswordSalt = table.Column<byte[]>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
-                    DateOfBith = table.Column<DateTime>(nullable: false),
-                    KnowAS = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
+                    KnownAs = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
                     LastActive = table.Column<DateTime>(nullable: false),
                     Introduction = table.Column<string>(nullable: true),
@@ -39,7 +39,7 @@ namespace DatingAppApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Url = table.Column<string>(nullable: true),
-                    Descripcion = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     DateAdd = table.Column<DateTime>(nullable: false),
                     IsMain = table.Column<bool>(nullable: false),
                     UserId = table.Column<int>(nullable: false)

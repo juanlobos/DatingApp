@@ -23,7 +23,7 @@ namespace DatingAppApi.Migrations
 
                     b.Property<DateTime>("DateAdd");
 
-                    b.Property<string>("Descripcion");
+                    b.Property<string>("Description");
 
                     b.Property<bool>("IsMain");
 
@@ -49,7 +49,7 @@ namespace DatingAppApi.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<DateTime>("DateOfBith");
+                    b.Property<DateTime>("DateOfBirth");
 
                     b.Property<string>("Gender");
 
@@ -57,7 +57,7 @@ namespace DatingAppApi.Migrations
 
                     b.Property<string>("Introduction");
 
-                    b.Property<string>("KnowAS");
+                    b.Property<string>("KnownAs");
 
                     b.Property<DateTime>("LastActive");
 
@@ -77,7 +77,7 @@ namespace DatingAppApi.Migrations
             modelBuilder.Entity("DatingAppApi.Data.Photo", b =>
                 {
                     b.HasOne("DatingAppApi.Data.User", "User")
-                        .WithMany("Photo")
+                        .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
