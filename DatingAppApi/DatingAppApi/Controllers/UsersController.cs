@@ -6,6 +6,7 @@ using DatingAppApi.Data;
 using DatingAppApi.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DatingAppApi.Controllers
 {

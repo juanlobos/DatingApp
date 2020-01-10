@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 
 namespace DatingAppApi.Controllers
 {
@@ -17,9 +18,11 @@ namespace DatingAppApi.Controllers
     {
         private readonly IAuthRepository _rep;
         private readonly IConfiguration _conf;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository rep, IConfiguration conf)
+        public AuthController(IAuthRepository rep, IConfiguration conf, IMapper mapper)
         {
+            _mapper = mapper;
             _rep = rep;
             _conf = conf;
         }
@@ -40,17 +43,17 @@ namespace DatingAppApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModels login)
         {
-            var user = await _rep.Login(login.Username.ToLower(), login.Password);
+            var userFromRepo = await _rep.Login(login.Username.ToLower(), login.Password);
 
-            if (user == null)
+            if (userFromRepo == null)
             {
                 return Unauthorized();
             }
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                new Claim(ClaimTypes.Name,user.Username)
+                new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
+                new Claim(ClaimTypes.Name,userFromRepo.Username)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf.GetSection("AppSettings:Token").Value));
 
@@ -64,7 +67,10 @@ namespace DatingAppApi.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
+
+            return Ok(new { token = tokenHandler.WriteToken(token),user });
         }
 
 
