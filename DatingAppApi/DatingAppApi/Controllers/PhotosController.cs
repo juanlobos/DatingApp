@@ -86,6 +86,7 @@ namespace DatingAppApi.Controllers
                 return Unauthorized();
             }
             var user = await _rep.GetUser(userId);
+            
             if (!user.Photos.Any(p=>p.Id==id))
             {
                 return Unauthorized();

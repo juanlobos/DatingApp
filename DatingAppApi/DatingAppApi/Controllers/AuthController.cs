@@ -35,10 +35,11 @@ namespace DatingAppApi.Controllers
                 return BadRequest("Usuario ya existente");
             }
 
-            var userToCreate = new User { Username = register.Username };
+            var userToCreate = _mapper.Map<User>(register);
 
             var createUser = await _rep.Register(userToCreate, register.Password);
-            return StatusCode(201);
+            var userReturn = _mapper.Map<UserForDetailsDto>(createUser);
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createUser.Id },userReturn);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModels login)
