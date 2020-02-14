@@ -13,6 +13,12 @@ namespace DatingAppApi.Helpers
             response.Headers.Add("Access-Control-Allow-Origin", "*");
         }
 
+        public static void AddPagination(this HttpResponse response, int currentPage, int itemsPerPage,
+        int totalItems,int totalPages)
+        {
+
+        }
+
         public static int CalculateEdad(this DateTime theDateTime)
         {
             var age = DateTime.Today.Year - theDateTime.Year;
