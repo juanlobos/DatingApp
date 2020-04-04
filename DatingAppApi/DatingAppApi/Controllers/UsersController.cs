@@ -12,6 +12,7 @@ using DatingAppApi.Helpers;
 namespace DatingAppApi.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController: ControllerBase
@@ -26,10 +27,18 @@ namespace DatingAppApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
-            var users= await _rep.GetUsers();
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userFromRepo = await _rep.GetUser(currentUserId);
+            userParams.UserId = currentUserId;
+            if (String.IsNullOrEmpty(userParams.Gender))
+            {
+                userParams.Gender=userFromRepo.Gender=="male" ? "female":"male";
+            }
+            var users= await _rep.GetUsers(userParams);
             var usersReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
+            Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
             return Ok(usersReturn);
         }
 
