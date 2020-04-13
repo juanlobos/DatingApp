@@ -67,5 +67,34 @@ namespace DatingAppApi.Controllers
             }
             throw new Exception($"Los datos del usuario {id} no se han guardado");
         }
+
+        [HttpPost("{id}/like/{recipientId}")]
+        public async Task<IActionResult> LikeUser(int id, int recipientId)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            var like= await _rep.GetLike(id,recipientId);
+            if (like != null)
+            {
+                return BadRequest("Ya le ha dado like a ese usuario");
+            }
+            if (await _rep.GetUser(id)==null)
+            {
+                return NotFound();
+            }
+
+            like=new Like{
+                LikerId=id,
+                LikeeId=recipientId
+            };
+            _rep.Add(like);
+            if (await _rep.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("Failed to like User");
+        }
     }
 }
