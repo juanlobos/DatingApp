@@ -20,18 +20,18 @@
             <strong>Member since:</strong>
             <p>{{user.created | date: 'mediumDate'}}</p>
             </div>
-        </div>
+        </div> 
         <div class="card-footer">
             <div class="btn-group d-flex">
                 <button class="btn btn-primary w-100">Like</button>
-                <button class="btn btn-success w-100">Message</button>
+                <button class="btn btn-success w-100" (click)="selectTab(3)">Message</button>
             </div>
         </div>
       </div>
     </div>
     <div class="col sm 8">
       <div class="tab-panel">
-        <tabset class="member-tabset">
+        <tabset class="member-tabset" #memberTabs>
           <tab heading="Acerca {{user.knownAs}}">
             <h4>Descripción</h4>
             <p>{{user.introduction}}</p>
@@ -47,7 +47,7 @@
           </tab>
           <tab heading="Mensajes">
             <h4>Mensajes</h4>
-            <p>Mensajes will go here</p>
+            <app-member-messages [recipientId]="user.id"></app-member-messages>
           </tab>
         </tabset>
       </div>
